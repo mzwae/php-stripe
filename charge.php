@@ -10,7 +10,10 @@ $STRIPE_KEY = getenv('STRIPE_SECRET');
 
 \Stripe\Stripe::setApiKey($STRIPE_KEY);
 
-// Sanitize Post array
+/**
+ * 
+ * Sanitize Post array
+ */
 
 $POST = filter_var_array($_POST, FILTER_SANITIZE_STRING);
 
@@ -23,10 +26,25 @@ $token = $POST['stripeToken'];
 // echo $token;
 
 
-// Create Customer In Stripe
+/**
+ *  Create Customer In Stripe
+ */
 $customer = \Stripe\Customer::create(array(
     "email" => $email,
     "source" => $token
 ));
+
+/**
+ * Charge Customer
+ */
+
+$charge = \Stripe\Charge::create(array(
+    "amount" => 5000, // equal to $50.00
+    "currency" => "usd",
+    "description" => "Intro to REACT Course",
+    "customer" => $customer->id
+));
+
+// print_r($charge);
 
 
