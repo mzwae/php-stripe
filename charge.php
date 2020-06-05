@@ -48,3 +48,9 @@ $charge = \Stripe\Charge::create(array(
 // print_r($charge);
 
 
+/**
+ * Redirect to success page
+ */
+$charge_id = $charge->id;
+$charge_desc = $charge->description;
+header('Location: success.php?tid='.$charge_id.'&product='.$charge_desc);
