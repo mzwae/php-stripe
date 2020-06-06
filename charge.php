@@ -1,5 +1,8 @@
 <?php
 require_once('vendor\autoload.php');
+require_once('config\db.php');
+require_once('lib\pdo_db.php');
+require_once('models\Customer.php');
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -47,6 +50,22 @@ $charge = \Stripe\Charge::create(array(
 
 // print_r($charge);
 
+// Store Customer data
+$customerData = [
+    'id' => $charge->customer,
+    'first_name' => $first_name,
+    'last_name' => $last_name,
+    'email' => $email
+];
+
+
+/**
+ * Create a new customer
+ */
+$customer = new Customer();
+
+// Add Customer to DB
+$customer->addCustomer($customerData);
 
 /**
  * Redirect to success page
