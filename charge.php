@@ -1,8 +1,10 @@
 <?php
+
 require_once('vendor\autoload.php');
 require_once('config\db.php');
 require_once('lib\pdo_db.php');
 require_once('models\Customer.php');
+require_once('models\Transaction.php');
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
@@ -66,6 +68,27 @@ $customer = new Customer();
 
 // Add Customer to DB
 $customer->addCustomer($customerData);
+
+
+
+// Store Transaction data
+$transactionData = [
+    'id' => $charge->id,
+    'customer_id' => $charge->customer,
+    'product' => $charge->description,
+    'amount' => $charge->amount,
+    'currency' => $charge->currency,
+    'status' => $charge->status
+];
+
+
+/**
+ * Create a new transaction
+ */
+$transaction = new Transaction();
+
+// Add Transaction to DB
+$transaction->addTransaction($transactionData);
 
 /**
  * Redirect to success page
